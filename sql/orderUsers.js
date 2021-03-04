@@ -4,6 +4,7 @@
 // in descending order by their friendly name.
 
 const orderUsers = `
+select * from Users Order BY admin DESC, friendlyname DESC;
 `;
 
 module.exports = { orderUsers };

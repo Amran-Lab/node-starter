@@ -9,8 +9,9 @@ CREATE TABLE IF NOT EXISTS Messages (
     id INTEGER PRIMARY KEY AUTOINCREMENT,
     message TEXT,
     userid INTEGER,
-    created TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
-    archive INTEGER(1) DEFAULT 0
+    created TIMESTAMP DEFAULT (strftime('%s','now')),
+    archive INTEGER(1) DEFAULT 0,
+    FOREIGN KEY(userid) REFERENCES Users(userid)
 );
 `
 module.exports = { createMessages };

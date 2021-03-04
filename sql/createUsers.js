@@ -10,7 +10,7 @@ CREATE TABLE IF NOT EXISTS Users (
     emailaddress VARCHAR(320) NOT NULL UNIQUE,
     password VARCHAR(256) NOT NULL,
     admin INTEGER(1),
-    lastlogin INTEGER(4) DEFAULT CURRENT_TIMESTAMP
+    lastlogin INTEGER(4) DEFAULT (strftime('%s','now'))
 );
 `
 module.exports = { createUsers };
