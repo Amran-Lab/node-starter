@@ -5,5 +5,12 @@
 // Repeat the setup for “CURRENT_TIMESTAMP” as outlined in the previous requirement.
 
 const createMessages = `
+CREATE TABLE IF NOT EXISTS Messages (
+    id INTEGER PRIMARY KEY AUTOINCREMENT,
+    message TEXT,
+    userid INTEGER,
+    created TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+    archive INTEGER(1) DEFAULT 0
+);
 `
 module.exports = { createMessages };
