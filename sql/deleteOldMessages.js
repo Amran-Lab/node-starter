@@ -4,7 +4,7 @@
 const deleteOldMessages = `
 DELETE FROM Messages
 WHERE created < strftime('%s','now','-30 days')
-AND archived = 1;
+AND archive = 1;
 `;
 
 module.exports = { deleteOldMessages };

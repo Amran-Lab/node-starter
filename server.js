@@ -50,6 +50,12 @@ app.post('/api/delete-message-id', function(req,res) {
     console.log("This is the req",req.body);
     query.deleteMessage(db,req,res);
 });
+app.get('/api/get-all-messages/:id', function(req,res) {
+    console.log("This is the req",req.body);
+    var searchId = req.params.id
+    console.log(searchId)
+    query.getMessagesAll(db,req,res,searchId);
+});
 
 app.listen(3000, function () {
     dba.init(db);

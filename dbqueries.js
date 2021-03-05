@@ -8,7 +8,7 @@ let { postMessage } = require('./sql/postMessage');
 
 // Task D13
 function getUsers(db, req, res) {
-    db.all(`select friendlyname, emailaddress, admin, datetime(lastlogin,'unixepoch') AS timestamp  FROM Users;`, (err, rows) => {
+    db.all(`select userid,friendlyname, emailaddress, admin, datetime(lastlogin,'unixepoch') AS timestamp  FROM Users;`, (err, rows) => {
         if (err) {
             console.error(err.message);
         }
@@ -124,5 +124,17 @@ function deleteMessage(db, req, res) {
         res.send({ "ok":messg }).status(200);
     })
 }
+function getMessagesAll(db, req, res,searchID) {
+  
+    db.all('select * from Messages where userid = ?',[searchID], (err, rows) => {
+        if (err) {
+            console.error(err.message);
+        }
+        if (!rows) {
+            res.send({ error: "no users found" })
+        }
+        res.send(rows);
+    })
+}
 
-module.exports = { getUsers, organiseUsers, createUser, getFromFranklins, updateSteveJobs, deleteOldMess, archiveJobs, postAMessage, updateTimestamp, deleteMessage }
+module.exports = { getUsers, organiseUsers, createUser, getFromFranklins, updateSteveJobs, deleteOldMess, archiveJobs, postAMessage, updateTimestamp, deleteMessage, getMessagesAll }

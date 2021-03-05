@@ -4,6 +4,19 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Document</title>
+    <style>
+      select {
+  width: 200px;
+
+  white-space: nowrap;
+  text-overflow: ellipsis;
+  max-width: 600px
+      }
+
+
+
+      </style>
+
 </head>
 <body>
 
@@ -99,14 +112,16 @@
         <input type="text" id ="message-to-post" name="message-to-post"><br>
         <input type="submit" value="Post a message">
     </form>
-    <div id="show added message"></div>
+    <div id="show-added-message"></div>
      <hr>
 
     <!-- C14. Post a message -->
     <h2>C15 task. Update Timestamp</h2>
     <form id="update-timestamp-form">
-        <label for="userid-t">User id:</label>
-        <input type="text" id="userid-t" name="userid"><br>
+      <div id="timestamp-select"><label for="mySelect">User name:</label></div>
+      <br>
+        <label for="userid-timestamp">User id:</label>
+        <input type="text" id="userid-timestamp" name="userid"><br>
         <br>
         <input type="submit" value="Update Timestamp">
     </form>
@@ -114,10 +129,15 @@
       <hr>
         <h2>C15 task. Delete Message</h2>
     <form id="delete-message-form">
+          <div id="delete-select"><label for="delmess">User name:</label>
+          <select id="delmess"></select>
+          <label for="message-selectid">Message:</label>
+          <select id="message-selectid"></select></div>
+          <br>
         <label for="messageid">Message id:</label>
         <input type="text" id="messageid" name="messageid"><br>
         <br>
-        <input type="submit" value="Delete Messag">
+        <input type="submit" value="Delete Message">
     </form>
       <div id="show-delete-updated"></div>
   
@@ -264,13 +284,18 @@
                 body,
                 credentials: 'same-origin'
             }).then(res => res.json())
-            .then(res => console.log("here is res", res))
+            .then(res => document.getElementById('show-added-message').innerText=JSON.stringify(res.ok))
             .catch((err) => console.log("error goes here",err));
     }); 
     const formupdateTimestamp = document.getElementById('update-timestamp-form');
     formupdateTimestamp.addEventListener('submit', event => {
-            const userid = document.getElementById('userid-t').value;
+            var userid = document.getElementById('userid-timestamp').value;
             event.preventDefault();
+            var useridselect = document.getElementById('mySelect').value;
+            if (useridselect !='null'){
+              userid=useridselect;
+            }
+            console.log(userid)
             let body = JSON.stringify({ userid });
             fetch("/api/update-timestamp", {
                 method: 'POST',
@@ -278,13 +303,23 @@
                 body,
                 credentials: 'same-origin'
             }).then(res => res.json())
-            .then(res => console.log("here is res", res))
             .then(res => document.getElementById('show-timestamp-updated').innerText=JSON.stringify(res.ok))
             .catch((err) => console.log("error goes here",err));
     });
     const formdeleteMessage = document.getElementById('delete-message-form');
     formdeleteMessage.addEventListener('submit', event => {
-            const messageid = document.getElementById('messageid').value;
+            var messageid = document.getElementById('messageid').value;
+            try {
+            var messageidselect = document.getElementById('message-selectid').value;
+                if (messageidselect !='null'){
+                  messageid =messageidselect;
+                  console.log(messageidselect)
+                }
+            }
+            catch (err){
+              console.log('ERROR')
+            }
+
             event.preventDefault();
             let body = JSON.stringify({ messageid });
             fetch("/api/delete-message-id", {
@@ -297,7 +332,112 @@
             .catch((err) => console.log("error goes here",err));
     });
 
+
+  function dropdownusers(){
+    fetch('/api/users')
+      .then((res)=>res.json())
+      .then(res=> {
+       const container = document.getElementById('timestamp-select');
+      console.log(res);
+      
+      var selectList = document.createElement('select');
+      selectList.id = 'mySelect';
+      container.appendChild(selectList); 
+      var option = document.createElement("option");
+            option.value = "null";
+            option.text = "";
+            selectList.appendChild(option);;
+
+      res.forEach( user => {
+                        // console.log(message);
+            
+            const { userid,friendlyname } = user;
+            var option = document.createElement("option");
+            option.value = parseInt(userid);
+            option.text = friendlyname;
+            selectList.appendChild(option);;
+        });
+        });
+    }
+    dropdownusers()
+
+    function addtoSelect(sel){
+      fetch('/api/users')
+      .then((res)=>res.json())
+      .then(res=> {
+      
+      const selectList = document.getElementById(sel);
+      var option = document.createElement("option");
+            option.value = "null";
+            option.text = "";
+            selectList.appendChild(option);;
+
+      res.forEach( user => {
+                        // console.log(message);
+            
+            const { userid,friendlyname } = user;
+            var option = document.createElement("option");
+            option.value = parseInt(userid);
+            option.text = friendlyname;
+            selectList.appendChild(option);;
+        });
+        });
+    }
+    
+
+    
+
+    function getuserMessage(id){
+      
+    fetch(`/api/get-all-messages/${id}`)
+                .then((res)=>res.json())
+                .then(res=> {
+                  
+                  
+              const selectList = document.getElementById('message-selectid');
+              var length = selectList.options.length;
+              for (i = length-1; i >= 0; i--) {
+                  selectList.options[i] = null;
+              }
+              var option = document.createElement("option");
+              
+              
+              option.value = "null";
+              option.text = "";
+              selectList.appendChild(option);;
+
+              res.forEach( user => {
+                        // console.log(message);
+            
+                const { id,message } = user;
+                var option = document.createElement("option");
+                option.value = parseInt(id);
+                option.text = message;
+                selectList.appendChild(option);;
+            });
+        });
+    }
+    function dostuff(){
+
+      var activities = document.getElementById("timestamp-select");
+
+      var a = document.getElementById('delmess');
+      a.addEventListener('change', function() {
+      console.log(this.value);
+      getuserMessage(this.value)
+
+    }, false);
+    }
+    addtoSelect('delmess')
+    dostuff()
+
+
+
+
+
+
     </script>
+
 
 </body>
 </html>
