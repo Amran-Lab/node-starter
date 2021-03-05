@@ -42,6 +42,14 @@ app.post('/api/post-message', function(req,res) {
     console.log("This is the req",req.body);
     query.postAMessage(db,req,res);
 });
+app.post('/api/update-timestamp', function(req,res) {
+    console.log("This is the req",req.body);
+    query.updateTimestamp(db,req,res);
+});
+app.post('/api/delete-message-id', function(req,res) {
+    console.log("This is the req",req.body);
+    query.deleteMessage(db,req,res);
+});
 
 app.listen(3000, function () {
     dba.init(db);

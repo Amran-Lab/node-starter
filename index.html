@@ -48,7 +48,7 @@
     <!-- C10 task. Creates a delete button to delete messages older than 30 days -->
     <h2>C10 task. Delete old messages</h2>
     <form id="delete-messages-older-30-form">
-        <input type="submit" value="Delete non-archived messages older than 30 days">
+        <input type="submit" value="Delete archived messages older than 30 days">
     </form>
     <!-- Creates a div element where the update is shown -->
     <div id="show-messages-deleted"></div>
@@ -100,6 +100,28 @@
         <input type="submit" value="Post a message">
     </form>
     <div id="show added message"></div>
+     <hr>
+
+    <!-- C14. Post a message -->
+    <h2>C15 task. Update Timestamp</h2>
+    <form id="update-timestamp-form">
+        <label for="userid-t">User id:</label>
+        <input type="text" id="userid-t" name="userid"><br>
+        <br>
+        <input type="submit" value="Update Timestamp">
+    </form>
+      <div id="show-timestamp-updated"></div>
+      <hr>
+        <h2>C15 task. Delete Message</h2>
+    <form id="delete-message-form">
+        <label for="messageid">Message id:</label>
+        <input type="text" id="messageid" name="messageid"><br>
+        <br>
+        <input type="submit" value="Delete Messag">
+    </form>
+      <div id="show-delete-updated"></div>
+  
+    
 
     <script>
         const buttonGetUsers = document.querySelector('.getting-users-form');
@@ -245,7 +267,35 @@
             .then(res => console.log("here is res", res))
             .catch((err) => console.log("error goes here",err));
     }); 
-
+    const formupdateTimestamp = document.getElementById('update-timestamp-form');
+    formupdateTimestamp.addEventListener('submit', event => {
+            const userid = document.getElementById('userid-t').value;
+            event.preventDefault();
+            let body = JSON.stringify({ userid });
+            fetch("/api/update-timestamp", {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body,
+                credentials: 'same-origin'
+            }).then(res => res.json())
+            .then(res => console.log("here is res", res))
+            .then(res => document.getElementById('show-timestamp-updated').innerText=JSON.stringify(res.ok))
+            .catch((err) => console.log("error goes here",err));
+    });
+    const formdeleteMessage = document.getElementById('delete-message-form');
+    formdeleteMessage.addEventListener('submit', event => {
+            const messageid = document.getElementById('messageid').value;
+            event.preventDefault();
+            let body = JSON.stringify({ messageid });
+            fetch("/api/delete-message-id", {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body,
+                credentials: 'same-origin'
+            }).then(res => res.json())
+            .then(res => document.getElementById('show-delete-updated').innerText=JSON.stringify(res.ok))
+            .catch((err) => console.log("error goes here",err));
+    });
 
     </script>
 

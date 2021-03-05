@@ -4,6 +4,8 @@
 // specific user can post a new message via the AdaBoard’s front-end.
 
 const postMessage = `
+INSERT INTO Messages (message,userid) VALUES
+(?,?);
 `;
 
 module.exports = { postMessage };

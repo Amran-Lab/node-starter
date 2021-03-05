@@ -8,7 +8,7 @@ let { postMessage } = require('./sql/postMessage');
 
 // Task D13
 function getUsers(db, req, res) {
-    db.all(`write your query here`, (err, rows) => {
+    db.all(`select friendlyname, emailaddress, admin, datetime(lastlogin,'unixepoch') AS timestamp  FROM Users;`, (err, rows) => {
         if (err) {
             console.error(err.message);
         }
@@ -33,7 +33,7 @@ function organiseUsers(db, req, res) {
 // Task D12
 function createUser(db, req, res) {
     const { username, email, password } = req.body;
-    db.run(`write your query here`, [username, email, password],
+    db.run(`Insert INTO Users(friendlyname,emailaddress,password,admin,lastlogin) VALUES (?,?,?,0,0)`, [username, email, password],
       function(err) {
         if (err) {
           return console.log(err.message)
@@ -47,6 +47,7 @@ function createUser(db, req, res) {
 
 function getFromFranklins(db, req, res) {
     db.all(getMessagesFromFranklins, (err, rows) => {
+
         if (err) {
             console.error(err.message);
         }
@@ -100,5 +101,28 @@ function postAMessage(db, req, res) {
         res.send({ "ok":messg }).status(200);
     })
 }
+function updateTimestamp(db, req, res) {
+    const { userid } = req.body;
+    db.run(`UPDATE Users SET lastlogin = strftime('%s','now') WHERE Users.userid=?;`, [userid],
+      function(err) {
+        if (err) {
+          return console.log(err.message)
+    }
+        const messg = `"ok": "Login time for ${userid} has been updated"`;
+        res.send({ "ok":messg }).status(200);
+    })
+}
+function deleteMessage(db, req, res) {
+    const { messageid } = req.body;
+    db.run(`DELETE FROM Messages
+            WHERE id = ?;`, [messageid],
+      function(err) {
+        if (err) {
+          return console.log(err.message)
+    }
+        const messg = `Message Delete for ${messageid} `;
+        res.send({ "ok":messg }).status(200);
+    })
+}
 
-module.exports = { getUsers, organiseUsers, createUser, getFromFranklins, updateSteveJobs, deleteOldMess, archiveJobs, postAMessage }
+module.exports = { getUsers, organiseUsers, createUser, getFromFranklins, updateSteveJobs, deleteOldMess, archiveJobs, postAMessage, updateTimestamp, deleteMessage }

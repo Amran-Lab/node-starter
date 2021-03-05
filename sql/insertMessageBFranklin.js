@@ -6,6 +6,6 @@
 
 const insertMessageBFranklin = `
 INSERT INTO Messages (message,userid,created) VALUES
-('I didn''t fail the test. I just found 1000 ways to do it wrong.',1003,strftime('%s',datetime('now','-2 month')));
+('I didn''t fail the test. I just found 1000 ways to do it wrong.',1003,strftime('%s','now','-2 month'));
 `
 module.exports = { insertMessageBFranklin };

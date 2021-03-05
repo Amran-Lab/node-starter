@@ -4,6 +4,9 @@
 // on the user’s exact name rather than the user’s id.
 
 const archiveSteve = `
+UPDATE Messages
+SET archive = 1
+WHERE userid in (SELECT userid FROM Users where friendlyname='Steve Jobs');
 
 `;
 
