@@ -6,7 +6,8 @@
 
 
 const getMessagesFromFranklins = `
-SELECT Users.friendlyname,Messages.message,datetime(messages.created,'unixepoch')  AS created, Messages.id FROM Messages
+SELECT Users.friendlyname,Messages.message,datetime(messages.created,'unixepoch')  AS created 
+FROM Messages
 INNER JOIN Users ON users.userid=messages.userid
 WHERE Users.friendlyname Like '%Franklin%'
 AND

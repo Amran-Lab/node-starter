@@ -5,6 +5,7 @@ let { createIndex } = require('./sql/createIndex');
 let { createMessages } = require('./sql/createMessages');
 let { insertMessages } = require('./sql/insertMessages');
 let { insertMessageBFranklin } = require('./sql/insertMessageBFranklin');
+let { createRatings } = require('./sql/createRatings');
 
 function connect() {
   let db = new sqlite3.Database('./db/mydb.sqlite', (err) => {
@@ -42,6 +43,9 @@ function init(db) {
       });
       db.run(insertMessageBFranklin, (err) => {
         if (err) { console.log(err) } else { console.log("Inserting some messages") }
+      });
+      db.run(createRatings, (err) => {
+        if (err) { console.log(err) } else { console.log("Create table Ratings") }
       });
   });
 }

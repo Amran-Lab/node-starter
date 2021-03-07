@@ -108,7 +108,7 @@ function updateTimestamp(db, req, res) {
         if (err) {
           return console.log(err.message)
     }
-        const messg = `"ok": "Login time for ${userid} has been updated"`;
+        const messg = `Login time for ${userid} has been updated`;
         res.send({ "ok":messg }).status(200);
     })
 }

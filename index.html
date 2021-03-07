@@ -117,6 +117,7 @@
 
     <!-- C14. Post a message -->
     <h2>C15 task. Update Timestamp</h2>
+    <p> Update By Dropdown or Using User Id</p>
     <form id="update-timestamp-form">
       <div id="timestamp-select"><label for="mySelect">User name:</label></div>
       <br>
@@ -127,7 +128,8 @@
     </form>
       <div id="show-timestamp-updated"></div>
       <hr>
-        <h2>C15 task. Delete Message</h2>
+        <h2>C16 task. Delete Message</h2>
+        <p> Delete By Dropdown or Using Message Id</p>
     <form id="delete-message-form">
           <div id="delete-select"><label for="delmess">User name:</label>
           <select id="delmess"></select>
@@ -205,7 +207,7 @@
                 body,
                 credentials: 'same-origin'
             }).then(res => res.json())
-            .then(res => console.log("here is res", res))
+            .then(res => document.getElementById('added-user-shown').innerText='User Added')
             .catch((err) => console.log("error goes here",err));
         });
 
